@@ -21,14 +21,14 @@ import { AuthGuard } from "../guars/auth.guard";
 
 
 @Serialize(User)
-@Controller("user")
+@Controller("auth")
 @UseInterceptors(UserInterceptor)
 export class AuthController {
   constructor(private authService: AuthService, private userService: UserService) {
   }
 
   @UseGuards(AuthGuard)
-  @Get("/auth-me")
+  @Get("/me")
   async authMe(@CurrentUser() user: User) {
     return user;
   }
