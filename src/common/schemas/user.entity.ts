@@ -9,11 +9,11 @@ export class UserSchema {
   @Column()
   email: string;
 
-  @Column()
-  password: string;
+  @Column({ default: true })
+  admin: boolean;
 
   @Column()
-  online: boolean;
+  password: string;
 
   @OneToMany(() => ReportSchema, (report) => report.user)
   reports: ReportSchema[];

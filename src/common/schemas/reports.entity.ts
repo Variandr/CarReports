@@ -6,6 +6,9 @@ export class ReportSchema {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ default: false })
+  approved: boolean;
+
   @Column()
   make: string;
 

@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
-import { AuthGuard } from "../guars/auth.guard";
+import { Body, Controller, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
+import { AuthGuard } from "../common/guars/auth.guard";
 import { ReportsService } from "../services/reports.service";
-import { ReportDto, ReportWithUser } from "../validators/reports.dtos";
-import { CurrentUser } from "../decorators/user.decorator";
-import { UserSchema } from "../schema/user.entity";
-import { Serialize } from "../interceptors/serialize.interceptor";
+import { ApproveReportDto, ReportDto, ReportWithUser } from "../common/validators/reports.dtos";
+import { CurrentUser } from "../common/decorators/user.decorator";
+import { UserSchema } from "../common/schemas/user.entity";
+import { Serialize } from "../common/interceptors/serialize.interceptor";
+import { AdminGuard } from "../common/guars/admin.guard";
 
 @UseGuards(AuthGuard)
 @Controller("reports")
@@ -17,14 +18,15 @@ export class ReportsController {
     return await this.service.getReports();
   }
 
-  @Serialize(ReportWithUser)
   @Post()
+  @Serialize(ReportWithUser)
   async addReport(@Body() body: ReportDto, @CurrentUser() user: UserSchema) {
     return await this.service.addReport(body, user);
   }
 
-  @Post("/:id")
-  async editReport(@Param("id") id: number) {
-    return await this.service.editReport(id);
+  @Patch("/:id")
+  @UseGuards(AdminGuard)
+  async approveReport(@Param("id") id: number, @Body() body: ApproveReportDto) {
+    return await this.service.approveReport(id, body.approved);
   }
 }

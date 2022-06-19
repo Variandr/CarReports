@@ -20,7 +20,7 @@ export class Update {
   password: string;
 }
 
-export class UserDtos {
+export class UserDto {
   @Expose()
   id: number;
 

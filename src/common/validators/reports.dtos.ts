@@ -1,4 +1,4 @@
-import { IsNumber, IsString, Max, Min } from "class-validator";
+import { IsBoolean, IsNumber, IsString, Max, Min } from "class-validator";
 import { Expose, Transform } from "class-transformer";
 
 const date = new Date();
@@ -29,8 +29,15 @@ export class ReportWithUser {
   price: number;
   @Expose()
   year: number;
+  @Expose()
+  approved: boolean;
 
   @Transform(({ obj }) => obj.user.id)
   @Expose()
   userId: number;
+}
+
+export class ApproveReportDto {
+  @IsBoolean()
+  approved: boolean;
 }

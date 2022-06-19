@@ -1,35 +1,22 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Put,
-  Session,
-  UseGuards,
-  UseInterceptors
-} from "@nestjs/common";
-import { Auth, Update, UserDtos } from "../validators/user.dtos";
+import { Body, Controller, Delete, Get, Post, Put, Session, UseGuards } from "@nestjs/common";
+import { Auth, UserDto } from "../common/validators/user.dtos";
 import { AuthService } from "../services/auth.service";
-import { Serialize } from "../interceptors/serialize.interceptor";
+import { Serialize } from "../common/interceptors/serialize.interceptor";
 import { UserService } from "../services/user.service";
-import { UserInterceptor } from "../interceptors/auth.interceptor";
-import { CurrentUser } from "../decorators/user.decorator";
-import { AuthGuard } from "../guars/auth.guard";
+import { CurrentUser } from "../common/decorators/user.decorator";
+import { AuthGuard } from "../common/guars/auth.guard";
+import { UserSchema } from "../common/schemas/user.entity";
 
 
-@Serialize(UserDtos)
+@Serialize(UserDto)
 @Controller("auth")
-@UseInterceptors(UserInterceptor)
 export class AuthController {
   constructor(private authService: AuthService, private userService: UserService) {
   }
 
   @UseGuards(AuthGuard)
   @Get("/me")
-  async authMe(@CurrentUser() user: UserDtos) {
+  async authMe(@CurrentUser() user: UserSchema) {
     return user;
   }
 
@@ -53,19 +40,9 @@ export class AuthController {
     return user;
   }
 
-  @Patch("/update")
-  async updatePassword(@Body() body: Update) {
-    return this.authService.updatePassword(body.id, body);
-  }
-
-  @Delete("/logout/:id")
-  async logout(@Param("id") id: number, @Session() session: any) {
+  @Delete("/logout")
+  async logout(@Session() session: any) {
     session.userId = undefined;
-    return this.authService.logout(id);
-  }
-
-  @Delete("/delete/:id")
-  async deleteUser(@Param("id") id: number) {
-    return this.authService.deleteUser(id);
+    return "Success"
   }
 }
