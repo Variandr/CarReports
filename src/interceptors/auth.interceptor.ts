@@ -2,6 +2,7 @@ import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nes
 import { Observable } from "rxjs";
 import { UserService } from "../auth/user.service";
 
+//set user to req with userId from cookie
 @Injectable()
 export class UserInterceptor implements NestInterceptor {
   constructor(private userService: UserService) {
@@ -11,7 +12,7 @@ export class UserInterceptor implements NestInterceptor {
     const req = context.switchToHttp().getRequest();
     const { userId } = req.session || {};
     if (userId) {
-      req.user = await this.userService.findOneById(userId);
+      req.user = await this.userService.findOneBy({id: userId});
     }
     return handler.handle();
   }

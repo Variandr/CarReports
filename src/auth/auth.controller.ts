@@ -26,10 +26,11 @@ import { AuthGuard } from "../guars/auth.guard";
 export class AuthController {
   constructor(private authService: AuthService, private userService: UserService) {
   }
+
   @UseGuards(AuthGuard)
   @Get("/auth-me")
   async authMe(@CurrentUser() user: User) {
-    return user
+    return user;
   }
 
   @UseGuards(AuthGuard)
