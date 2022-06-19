@@ -12,10 +12,6 @@ export class AuthService {
   constructor(@InjectRepository(Auth) private repo: Repository<Auth>) {
   }
 
-  async getUsers() {
-    return await this.repo.find();
-  }
-
   async register(email: string, password: string) {
     const user = await this.repo.findOneBy({ email: email });
     if (user) {
