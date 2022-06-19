@@ -7,22 +7,35 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { Auth } from "./auth/auth.entity";
 import { Report } from "./reports/reports.entity";
 import { APP_PIPE } from "@nestjs/core";
-import cookieSession from "cookie-session";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
-// const cookieSession = require("cookie-session");
+const cookieSession = require("cookie-session");
+
 @Module({
-  imports: [AuthModule, ReportsModule, TypeOrmModule.forRoot({
-    type: "postgres",
-    url: "postgres://klobjvmzsqvzgx:bd9b805dc8b632ee5f5dd0228c2c9011ddbce256110d2ce44d520768f666b9ec@ec2-54-228-32-29.eu-west-1.compute.amazonaws.com:5432/derl5r9lp6l09p",
-    entities: [Auth, Report],
-    synchronize: true,
-    ssl: true,
-    extra: {
-      ssl: {
-        rejectUnauthorized: false
+  imports: [
+    AuthModule,
+    ReportsModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.development`
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        return {
+          type: "postgres",
+          url: config.get<string>("DB_URL"),
+          entities: [Auth, Report],
+          synchronize: true,
+          ssl: true,
+          extra: {
+            ssl: {
+              rejectUnauthorized: false
+            }
+          }
+        };
       }
-    }
-  })
+    })
   ],
   controllers: [AppController],
   providers: [AppService, {
