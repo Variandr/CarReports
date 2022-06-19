@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { Auth } from "./auth.entity";
+import { Auth } from "../schema/user.entity";
 import { promisify } from "util";
 import { randomBytes, scrypt as _scrypt } from "crypto";
 import { UserService } from "./user.service";
@@ -14,7 +14,7 @@ export class AuthService {
   async register(email: string, password: string) {
     const user = await this.userService.findOneBy({ email: email });
     if (user) {
-      throw new NotFoundException("User with this email already exists");
+      throw new NotFoundException("UserDtos with this email already exists");
     }
     const salt = randomBytes(8).toString("hex");
     const hash = (await scrypt(password, salt, 32) as Buffer);
@@ -26,7 +26,7 @@ export class AuthService {
   async login(email: string, password: string) {
     const user = await this.userService.findOneBy({ email: email });
     if (!user) {
-      throw new NotFoundException("User does not exist");
+      throw new NotFoundException("UserDtos does not exist");
     }
     const [salt, hash] = user.password.split(".");
     const encryptedPassword = (await scrypt(password, salt, 32) as Buffer);
@@ -40,7 +40,7 @@ export class AuthService {
   async updatePassword(id: number, updateParams: Partial<Auth>) {
     const user = await this.userService.findOneBy({ id: id });
     if (!user) {
-      throw new NotFoundException("User does not exist");
+      throw new NotFoundException("UserDtos does not exist");
     }
     Object.assign(user, updateParams);
     return await this.userService.save(user);
@@ -49,7 +49,7 @@ export class AuthService {
   async deleteUser(id: number) {
     const user = await this.userService.findOneBy({ id: id });
     if (!user) {
-      throw new NotFoundException("User does not exist");
+      throw new NotFoundException("UserDtos does not exist");
     }
     return await this.userService.remove(user);
   }
@@ -57,7 +57,7 @@ export class AuthService {
   async logout(id: number) {
     const user = await this.userService.findOneBy({ id: id });
     if (!user) {
-      throw new NotFoundException("User does not exist");
+      throw new NotFoundException("UserDtos does not exist");
     }
     Object.assign(user, { online: false });
     return await this.userService.save(user);

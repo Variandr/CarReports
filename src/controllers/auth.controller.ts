@@ -11,16 +11,16 @@ import {
   UseGuards,
   UseInterceptors
 } from "@nestjs/common";
-import { Auth, Update, User } from "./dtos/dtos";
-import { AuthService } from "./auth.service";
+import { Auth, Update, UserDtos } from "../validators/user.dtos";
+import { AuthService } from "../services/auth.service";
 import { Serialize } from "../interceptors/serialize.interceptor";
-import { UserService } from "./user.service";
+import { UserService } from "../services/user.service";
 import { UserInterceptor } from "../interceptors/auth.interceptor";
-import { CurrentUser } from "../decorators/auth.decorator";
+import { CurrentUser } from "../decorators/user.decorator";
 import { AuthGuard } from "../guars/auth.guard";
 
 
-@Serialize(User)
+@Serialize(UserDtos)
 @Controller("auth")
 @UseInterceptors(UserInterceptor)
 export class AuthController {
@@ -29,7 +29,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get("/me")
-  async authMe(@CurrentUser() user: User) {
+  async authMe(@CurrentUser() user: UserDtos) {
     return user;
   }
 

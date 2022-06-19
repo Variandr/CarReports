@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Auth } from "./auth.entity";
+import { Auth } from "../schema/user.entity";
 import { FindOptionsWhere, Repository } from "typeorm";
 
 @Injectable()
@@ -19,7 +19,7 @@ export class UserService {
   async create(email: string, password: string) {
     const user = await this.repo.create({ email, password: password, online: true });
     if (!user) {
-      throw new NotFoundException("User was not created");
+      throw new NotFoundException("UserDtos was not created");
     }
     return user;
   }

@@ -1,6 +1,6 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
 import { Observable } from "rxjs";
-import { UserService } from "../auth/user.service";
+import { UserService } from "../services/user.service";
 
 //set user to req with userId from cookie
 @Injectable()

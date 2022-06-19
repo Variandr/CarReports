@@ -1,11 +1,11 @@
 import { MiddlewareConsumer, Module, ValidationPipe } from "@nestjs/common";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
-import { AuthModule } from "./auth/auth.module";
-import { ReportsModule } from "./reports/reports.module";
+import { AppController } from "../controllers/app.controller";
+import { AppService } from "../services/app.service";
+import { AuthModule } from "./auth.module";
+import { ReportsModule } from "./reports.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { Auth } from "./auth/auth.entity";
-import { Report } from "./reports/reports.entity";
+import { Auth } from "../schema/user.entity";
+import { ReportSchema } from "../schema/reports.entity";
 import { APP_PIPE } from "@nestjs/core";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
@@ -25,7 +25,7 @@ const cookieSession = require("cookie-session");
         return {
           type: "postgres",
           url: config.get<string>("DB_URL"),
-          entities: [Auth, Report],
+          entities: [Auth, ReportSchema],
           synchronize: true,
           ssl: true,
           extra: {
