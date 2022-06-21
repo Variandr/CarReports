@@ -1,5 +1,12 @@
-import { IsBoolean, IsNumber, IsString, Max, Min } from "class-validator";
-import { Expose, Transform } from "class-transformer";
+import {
+  IsBoolean,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
+import { Expose, Transform } from 'class-transformer';
 
 const date = new Date();
 
@@ -40,4 +47,27 @@ export class ReportWithUser {
 export class ApproveReportDto {
   @IsBoolean()
   approved: boolean;
+}
+
+export class ReportQueryDto {
+  @IsOptional()
+  @IsString()
+  make: string;
+
+  @IsOptional()
+  @IsString()
+  model: string;
+
+  @IsOptional()
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  @Min(0)
+  price: number;
+
+  @IsOptional()
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  @Min(1950)
+  @Max(date.getFullYear())
+  year: number;
 }
