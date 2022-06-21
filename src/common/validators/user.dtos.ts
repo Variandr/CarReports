@@ -1,5 +1,5 @@
-import { IsEmail, IsNumber, Length } from "class-validator";
-import { Expose } from "class-transformer";
+import { IsEmail, IsNumber, Length } from 'class-validator';
+import { Expose } from 'class-transformer';
 
 export class Auth {
   @IsEmail()

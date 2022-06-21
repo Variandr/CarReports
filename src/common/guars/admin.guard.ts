@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext } from "@nestjs/common";
+import { CanActivate, ExecutionContext } from '@nestjs/common';
 
 //check for user's admin access
 export class AdminGuard implements CanActivate {
