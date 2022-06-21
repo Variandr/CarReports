@@ -1,6 +1,5 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+This project was created by course [NestJS: The Complete Developer's Guide](https://www.udemy.com/course/nestjs-the-complete-developers-guide)
+
 [Heroku Build](https://variandr-nestjs-car-reports.herokuapp.com/)
 
 ## Installation
